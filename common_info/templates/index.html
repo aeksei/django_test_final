@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +8,6 @@
 </head>
 <body>
     <h1>Добро пожаловать на мой первый проект по Django</h1>
-    <img src="common_info/static/common_info/welcome.png">
+    <img src="{% static 'common_info/welcome.png' %}">
 </body>
 </html>
