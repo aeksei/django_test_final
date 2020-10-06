@@ -19,17 +19,24 @@ from datetime import datetime
 from django.contrib import admin
 from django.urls import path
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 
 def _get_info(request):
-    html = f"""<html><body>{sys.platform} | {sys.version}</body></html>"""
-    return HttpResponse(html)
+    # html = f"""<html><body>{sys.platform} | {sys.version}</body></html>"""
+    json_ = {
+        'platform': sys.platform,
+        'python': sys.version
+    }
+
+    return JsonResponse(json_)
 
 
 def _get_date(request):
     html = f"""{datetime.now()}"""
     return HttpResponse(html)
+
+
 
 
 urlpatterns = [
