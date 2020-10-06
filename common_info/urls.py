@@ -4,6 +4,8 @@ from datetime import datetime
 from django.urls import path
 from django.http import HttpResponse, JsonResponse
 
+from .views import index
+
 
 def _get_info(request):
     # html = f"""<html><body>{sys.platform} | {sys.version}</body></html>"""
@@ -21,6 +23,7 @@ def _get_date(request):
 
 
 urlpatterns = [
+    path('', index),
     path('info/', _get_info),
     path('date/', _get_date),
 ]
