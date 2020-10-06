@@ -1,7 +1,9 @@
 import json
 
-from django.urls import path, re_path
+from django.urls import path, reverse
 from django.http import HttpResponse, JsonResponse
+from django.shortcuts import redirect
+
 
 blogs = {
     2019: [
@@ -35,13 +37,11 @@ def _get_blogs_view(request):
 
 
 def _get_blog_year_view(request, year):
-    d = {}
-    for i, value in enumerate(blogs[int(year)]):
-        d[i] = value
-    return JsonResponse(d)
+    url = reverse('article', args=(year, 0))
+    return redirect(url)
 
 
-def _get_article(request, year, pk):
+def _get_article(request, year, pk=None):
     try:
         return JsonResponse(blogs[year][pk])
     except IndexError:
@@ -51,5 +51,5 @@ def _get_article(request, year, pk):
 urlpatterns = [
     path('blogs_view/', _get_blogs_view),
     path('blogs_view/<int:year>', _get_blog_year_view),
-    path('blogs_view/<int:year>/<int:pk>', _get_article),
+    path('blogs_view/<int:year>/<int:pk>', _get_article, name="article"),
 ]
