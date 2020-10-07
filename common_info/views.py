@@ -14,7 +14,3 @@ class IndexView(View):
     """Классовый подход для View"""
     def get(self, request):
         return render(request, 'index.html')
-
-    def post(self, request):
-        return render(request, 'index.html')
-
