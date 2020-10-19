@@ -25,8 +25,15 @@ class User(models.Model):
 
 
 class Product(models.Model):
+    PRODUCT_TYPE = (
+        ('1', 'fruct'),
+        ('2', 'veg'),
+        (None, 'Unknown')
+
+    )
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20, unique=True)
+    type = models.CharField(max_length=20, choices=PRODUCT_TYPE, null=True)
 
     def __str__(self):
         return f'{self.name}'
@@ -35,6 +42,8 @@ class Product(models.Model):
 class Cart(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     product = models.ForeignKey('Product', on_delete=models.PROTECT)
+
+    create_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user} - {self.product}"
