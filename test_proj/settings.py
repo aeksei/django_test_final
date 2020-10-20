@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'common_info',
     'shop',
+    'shop_1',
 ]
 
 MIDDLEWARE = [
