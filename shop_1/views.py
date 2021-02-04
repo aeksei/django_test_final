@@ -1,21 +1,24 @@
 from django.shortcuts import render, redirect, reverse
 from django.views import View
 from django.core.paginator import Paginator, EmptyPage
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .settings.info import INFO
+from shop_api.models import Cart
 
 # Create your views here.
 
-class IndexView(View):
+
+class IndexView(LoginRequiredMixin, View):
 
     def get(self, request):
-
+        print(request.user.id)
         contex = {}
         contex.update(INFO)
         return render(request, 'shop_1/index.html', contex)
 
 
-class ShopView(View):
+class ShopView(View, ):
     def get(self, request, page=1):
         products_list = [
             {
@@ -100,3 +103,25 @@ class ShopView(View):
         contex = {'page_obj': products_list}
         contex.update(INFO)
         return render(request, 'shop_1/shop.html', contex)
+
+
+class CartView(LoginRequiredMixin,
+               View):
+
+    def get(self, request):
+        cart_queryset = Cart.objects.filter(user__auth_user__username=request.user)
+
+        coupon = request.GET.get('coupon', None)
+        if coupon is not None:
+            print(coupon)
+
+        total_price = sum(cart_item.product.price for cart_item in cart_queryset)
+        contex = {
+            'page_obj': cart_queryset,
+            'total_price': total_price,
+            'coupon': coupon
+        }
+        contex.update(INFO)
+        return render(request, 'shop_1/cart.html', contex)
+
+

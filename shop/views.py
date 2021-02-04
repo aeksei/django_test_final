@@ -1,15 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from django.views import View
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 from .models import Product, Cart
 
 # Create your views here.
 
 
-class ProductView(View):
-
+class ProductView(LoginRequiredMixin, View):
     def get(self, request):
         product = Product.objects.all()
         if 'type' in request.GET:
@@ -26,18 +27,5 @@ class ProductView(View):
             return HttpResponse(f"Product create error !")
 
         return HttpResponse(f"Product {list(params.items())} create successful!")
-
-
-class CartView(View):
-    def get(self, request):
-        email = request.GET['email']
-        cart = Cart.objects.filter(user__email=email).order_by('-create_at')
-
-        return HttpResponse(cart)
-
-
-
-
-
 
 
